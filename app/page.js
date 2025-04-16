@@ -1,43 +1,57 @@
 'use client';
 import { useState } from 'react';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
-import '../styles/globals.css';
+import { ArrowLeft, ArrowRight, Volume2 } from 'lucide-react';
+import './styles/globals.css';
 
+// Flashcard verilerini burada tanımlıyoruz
 const flashcards = [
   {
     category: 'Pasaport Kontrolü',
     question: 'Why are you traveling? (Seyahat amacınız nedir?)',
     answer: 'I am going to Bucharest for a citizenship application.\n(Vatandaşlık başvurusu için Bükreş’e gidiyorum.)',
-    pronunciation: 'Ay em goin tu Bukarest for e sitizınşip epplikeyşın'
+    pronunciation: 'Ay em goin tu Bukarest for e sitizınşip epplikeyşın',
   },
   {
     category: 'Günlük Konuşmalar',
     question: 'Do you have a reservation? (Rezervasyonunuz var mı?)',
     answer: 'Yes, I have a hotel reservation.\n(Evet, otel rezervasyonum var.)',
-    pronunciation: 'Yes, ay hev e hötel rezırveyşın'
-  }
+    pronunciation: 'Yes, ay hev e hôtel rezerveyşın',
+  },
+  {
+    category: 'Restoran',
+    question: 'Can I see the menu? (Menüyü görebilir miyim?)',
+    answer: 'Can I see the menu, please?\n(Menüyü görebilir miyim?)',
+    pronunciation: 'Ken ay sii dhi menyu pliiiz?',
+  },
 ];
 
 export default function Page() {
   const [index, setIndex] = useState(0);
   const current = flashcards[index];
 
+  const speak = (text) => {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US';
+    speechSynthesis.speak(utterance);
+  };
+
   return (
-    <main className='flex flex-col items-center justify-center min-h-screen p-4 gap-4'>
-      <div className='w-full max-w-md border rounded-xl p-6 text-center shadow'>
-        <h2 className='text-lg font-semibold mb-2'>{current.category}</h2>
-        <p className='text-base mb-2'>❓ {current.question}</p>
-        <p className='text-base mb-2'>💬 {current.answer}</p>
-        <p className='text-sm italic text-gray-500'>📢 Okunuşu: {current.pronunciation}</p>
+    <div className="max-w-md mx-auto p-4 border rounded shadow text-center space-y-4">
+      <div className="text-sm text-gray-500">{current.category}</div>
+      <h2 className="font-bold text-lg">{current.question}</h2>
+      <p className="text-green-700">{current.answer}</p>
+      <p className="text-sm italic text-gray-600">Okunuşu: {current.pronunciation}</p>
+      <div className="flex justify-center space-x-4">
+        <ArrowLeft
+          className="cursor-pointer"
+          onClick={() => setIndex((prevIndex) => (prevIndex - 1 + flashcards.length) % flashcards.length)}
+        />
+        <ArrowRight
+          className="cursor-pointer"
+          onClick={() => setIndex((prevIndex) => (prevIndex + 1) % flashcards.length)}
+        />
+        <Volume2 className="cursor-pointer" onClick={() => speak(current.answer)} />
       </div>
-      <div className='flex gap-4'>
-        <button onClick={() => setIndex((index - 1 + flashcards.length) % flashcards.length)} className='px-4 py-2 bg-gray-200 rounded hover:bg-gray-300'>
-          <ArrowLeft className='inline w-4 h-4 mr-2' /> Geri
-        </button>
-        <button onClick={() => setIndex((index + 1) % flashcards.length)} className='px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600'>
-          İleri <ArrowRight className='inline w-4 h-4 ml-2' />
-        </button>
-      </div>
-    </main>
+    </div>
   );
 }
