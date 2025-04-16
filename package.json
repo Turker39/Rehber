@@ -7,12 +7,12 @@
     "start": "next start"
   },
   "dependencies": {
-    "next": "latest",
-    "react": "latest",
-    "react-dom": "latest",
+    "next": "^13.3.0",   // Bu sürüm ile uyumlu
+    "react": "^18.2.0",  // Bu sürüm ile uyumlu
+    "react-dom": "^18.2.0",  // Bu sürüm ile uyumlu
     "tailwindcss": "^3.4.1",
     "postcss": "^8.4.31",
-    "autoprefixer": "^10.4.16",
-    "lucide-react": "^0.258.0"
+    "autoprefixer": "^10.4.16"
   }
 }
+``
